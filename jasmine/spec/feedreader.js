@@ -41,7 +41,7 @@ $(function() {
     /* Menu test suite */
     describe('The Menu', function() {
           /* Ensures the menu element is hidden by default. */
-          it('menu is hidden on initial page load', function() {
+          it('is hidden on initial page load', function() {
               expect($("body").hasClass('menu-hidden')).toBe(true);
           });
 
@@ -52,7 +52,7 @@ $(function() {
               btn = $('.menu-icon-link');
           });
           /* Tests state of menu change upon click event  */
-           it('menu reveals and hides upon click', function() {
+           it('reveals and hides upon click', function() {
               btn.trigger('click');
               expect($("body").hasClass('menu-hidden')).toBe(false);
               btn.trigger('click');
@@ -65,32 +65,33 @@ $(function() {
           /* Ensures when the loadFeed function is called and completes its work, there is at least
            * a single .entry element within the .feed container. */
            beforeEach(function(done) {
-               loadFeed(0, done);
+             loadFeed(0, done);
            });
           /* Checks whether or not feed entries have content, after feeds have been loaded */
-          it('there is at least a single entry element in feed container', function(done) {
+          it('there is at least a single entry element in feed container', function() {
             var allEntries = $('.feed').find('.entry');
             expect(allEntries.length).not.toBe(0);
-            done();
           });
       });
 
-    /* New Feed Selection test suite */
-    describe('New Feed Selection', function() {
-        /* Ensures when a new feed is loaded by the loadFeed function that the content actually changes. */
-        /* Grabs initial feed content and assigns to variable */
-         var feedContent;
-         beforeEach(function(done) {
-             loadFeed(1, (function() {
-                 feedContent = $(".feed").html();
-             }));
-             done();
-         });
-         /* Compares initial feed content with current feed content to confirm that they're not the same */
-         it('feed content differs between each individual feed', function(done) {
-             loadFeed(2, done);
-             expect($(".feed").html()).not.toEqual(feedContent);
-         });
-    });
+      /* New Feed Selection test suite */
+      describe('New Feed Selection', function() {
+          /* Ensures when a new feed is loaded by the loadFeed function that the content actually changes. */
+          /* Grabs initial feed content and assigns to variable */
+          var feedContent;
+          beforeEach(function(done) {
+              loadFeed(1, function() {
+                feedContent = $(".feed").html();
+                done();
+              });
+          });
+
+          it('feed content differs between each individual feed', function(done) {
+              loadFeed(2, function() {
+                expect($(".feed").html()).not.toEqual(feedContent);
+                done();
+              });
+          });
+      });
 
 }());
